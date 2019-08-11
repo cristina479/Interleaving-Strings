@@ -1,2 +1,2 @@
 # Interleaving-Strings
-Determine if two strings are interleaved in a longer string
+Determine if two strings are interleaved in a longer string.
