@@ -8,16 +8,16 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 /**
- * Main class for the Interleaving String algorithm.
- * By default, the results are printed to a file. To print results to the terminal change the MAX_LENGTH array to be less than n (s.length)
+ * Main class for the Interleaving Strings algorithm.
+ * By default, the results are printed to a file. To print results to the terminal change traceRunToConsole to true. 
  * 
  * @author Cristina Padro-Juarbe
  *
  */
 public class Main {
-	final static int MAX_LENGTH_ARRAY = 5;
-	final static String filepath = "src/dp/output/";
-	final static String filepathTests = "src/dp/InputTests.txt";
+	final static boolean traceRunToConsole = false;
+	final static String filepath = "./dp/output/";
+	final static String filepathTests = "./dp/InputTests.txt";
 	static PrintWriter printWriter;
 	static int workMain = 0;
 	
@@ -72,11 +72,8 @@ public class Main {
 			String s = sArray[i];
 			int n = s.length();
 			
-			// determines if we should print the output to the console or to a file
-			boolean traceRunToConsole = (n <= MAX_LENGTH_ARRAY) ? true : false;
-			
-			workMain++;		//work recorded for calling the run() method
-			run(traceRunToConsole, s, x, y, n, i);
+			workMain++;			//work recorded for calling the run() method
+			run(s, x, y, n, i);
 			workMain = 0;		// reset work done for each test
 			i++;
 		}
@@ -85,16 +82,15 @@ public class Main {
 	}
 
 	/**
-	 * Helper method to read tests from a file, where each test determines if s is an interleaving of x and y.
+	 * Helper method to read the tests from a file, where each unique test determines if s is an interleaving of x and y.
 	 * 
-	 * @param traceRunToConsole boolean to determine if we should print the output to the console or to a file
 	 * @param s the signal we are listening to
 	 * @param x the signal emitted from ship A
 	 * @param y the signal emitted from ship B
 	 * @param n the length of signal s
 	 */
-	private static void run(boolean traceRunToConsole, String s, String x, String y, int n, int test) {
-		Interleave obj = null;
+	private static void run(String s, String x, String y, int n, int test) {
+		Interleave mytest = null;
 		
 		// print output to a file
 		if (!traceRunToConsole) {
@@ -102,20 +98,20 @@ public class Main {
 				printWriter = new PrintWriter(new FileWriter(filepath + "test=" + (test + 1) + " n=" + n + ".txt"));
 				
 				workMain++;		// work recorded for calling the Interleave constructor class
-				obj = new Interleave(s, x, y, n, printWriter);
+				mytest = new Interleave(s, x, y, n, printWriter);
 				 
 				workMain++;		// work recorded for calling the isInterleaved() method
-				boolean isInterleaved = obj.isInterleaved(s, x, y, n, printWriter);
+				boolean isInterleaved = mytest.isInterleaved(s, x, y, n, printWriter);
 				
 				// print result table if s is interleaved by X and Y
 				// no work is recorded for IO operations
 				if(isInterleaved) {
-					obj.printResultTable(s, n, printWriter);
+					mytest.printResultTable(s, n, printWriter);
 				}
 				
 				workMain++;			// work recorded for calling the getWork() method
 				workMain++;			// work recorded for returning from the run() method
-				printWriter.println("Total work done: " + (workMain + obj.getWork()) + "\n");			
+				printWriter.println("Total work done: " + (workMain + mytest.getWork()) + "\n");			
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
@@ -126,20 +122,20 @@ public class Main {
 			// print output to the terminal
 			
 			workMain++;		// work recorded for calling the Interleave constructor class
-			obj = new Interleave(s, x, y, n, null);
+			mytest = new Interleave(s, x, y, n, null);
 			
 			workMain++;		// work recorded for calling the isInterleaved() method
-			boolean isInterleaved = obj.isInterleaved(s, x, y, n, null);
+			boolean isInterleaved = mytest.isInterleaved(s, x, y, n, null);
 			
 			// print result table if s is interleaved by X and Y
 			// no work is recorded for IO operations
 			if(isInterleaved) {
-				obj.printResultTable(s, n, null);
+				mytest.printResultTable(s, n, null);
 			}
 			
 			workMain++;			// work recorded for calling the getWork() method
 			workMain++;			// work recorded for returning from the run() method
-			System.out.println("Total work done: " + (workMain + obj.getWork()) + "\n");
+			System.out.println("Total work done: " + (workMain + mytest.getWork()) + "\n");
 		}	
 		
 		System.out.println("Test " + (test + 1) + " done!");		
